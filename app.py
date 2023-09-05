@@ -16,7 +16,8 @@ class App:
         self.conn = sqlite3.connect('db/quizz.db')
         self.cursor = self.conn.cursor()
 
-        diff = 2
+        # difficulté (temporaire)
+        diff = 1
 
         # pygame initialisation
         pygame.init()
@@ -32,13 +33,14 @@ class App:
         #
 
         self.menu = Menu(self.screen)
-        self.game = Game(self.screen, self.cursor, diff)
+        self.game = Game(self, self.cursor, diff)
 
+        # to-do state machine
         self.statedict = {
             1: 'Menu',
             2: 'Game'
         }
-        self.state = 'Menu'
+        self.state = 'Game'
         # start game loop
         self.loop()
 
@@ -48,7 +50,12 @@ class App:
     def loop(self):
         # game loop
         while self.running:
+
+            dt = self.clock.tick(self.fps)
+
+            # check pygame events (user inputs)
             for event in pygame.event.get():
+                # quit program ('normalement' avec la croix ou alt-f4)
                 if event.type == pygame.QUIT:
                     self.running = False
 
@@ -65,26 +72,28 @@ class App:
                             self.state = 'Game'
                             self.game.timer.reset()
 
-
+                # keyboard inputs
                 if event.type == pygame.KEYDOWN:
                     keys = pygame.key.get_pressed()
+                    # quit program (Esc key)
                     if keys[pygame.K_ESCAPE]:
                         sys.exit()
 
+            # switch states
             if self.state == 'Menu':
                 self.menu.update()
             if self.state == 'Game':
                 self.game.update()
-            # method draw
+            # after updates go to draw
             self.draw()
-            self.clock.tick(self.fps)
 
 
     def draw(self):
-        self.screen.fill('#0a0a0a')
-        # projettage de l'image sur l'écran
+        self.screen.fill('#0a0a0a') # background of the window, overriden by background images
+        # switch states
         if self.state == 'Menu':
             self.menu.draw()
         if self.state == 'Game':
             self.game.draw()
+        # update changes
         pygame.display.flip()

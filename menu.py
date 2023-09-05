@@ -3,14 +3,19 @@ from button import Button
 import constants as C
 
 class Menu:
+    # constructeur
     def __init__(self, screen):
+        # get app's screen to draw on
         self.screen = screen
+
         self.background_img = pygame.image.load("img/menu_principal.png")
         self.button = Button(self.screen, 1050, 500, "img/boutons/menu/menu_nopush.png")
 
+    # method update, appelée chaque frame (60fois par sec)
     def update(self):
         self.button.update()
 
+    # method draw, appelée après l'update
     def draw(self):
         self.screen.blit(self.background_img, (0,0))
         # start button
