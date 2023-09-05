@@ -67,10 +67,11 @@ class App:
                             if b.checkForClick(event):
                                 self.game.answer_index = i+1
                     if self.state == 'Menu':
-                        if self.menu.button.checkForClick(event):
-                            time.sleep(0.1)
-                            self.state = 'Game'
-                            self.game.timer.reset()
+                        for i, b in enumerate(self.menu.btn_list):
+                            if b.checkForClick(event):
+                                time.sleep(0.1)
+                                self.state = 'Game'
+                                self.game.timer.reset()
 
                 # keyboard inputs
                 if event.type == pygame.KEYDOWN:
