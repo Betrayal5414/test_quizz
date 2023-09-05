@@ -5,10 +5,13 @@ WIN_SIZE = (1280,720)
 WIN_X = 1280
 WIN_Y = 720
 
+# Game values
+max_points = 20
+
 # coords
 question_number_pos = (180,215)
 question_title_pos = (110,280)
-start_text_pos = (WIN_X-200, 480)
+start_text_pos = (WIN_X-225, 480)
 quit_text_pos = (WIN_X-200, 22)
 
 # images
@@ -22,6 +25,8 @@ font_lcd = pygame.font.Font("fonts/jd_lcd_rounded.ttf", 40)
 font_pixelop = pygame.font.Font("fonts/PixelOperator.ttf", 36)
 font_pixelop8 = pygame.font.Font("fonts/PixelOperator8.ttf", 20)
 font_pixelop8small = pygame.font.Font("fonts/PixelOperator8.ttf", 12)
+font_symtext = pygame.font.Font("fonts/Symtext.ttf", 32)
+font_kemco = pygame.font.Font("fonts/Kemco_Pixel_Bold.ttf", 32)
 
 # colors
 D_GREEN = "#004428"

@@ -8,6 +8,7 @@ from button import Button
 import constants as C
 from menu import Menu
 from game import Game
+from scores import Score
 
 
 class App:
@@ -17,7 +18,7 @@ class App:
         self.cursor = self.conn.cursor()
 
         # difficulté (temporaire)
-        diff = 1
+        self.difficulte = 1
 
         # pygame initialisation
         pygame.init()
@@ -32,13 +33,15 @@ class App:
         self.fps = 60
         #
 
-        self.menu = Menu(self.screen)
-        self.game = Game(self, self.cursor, diff)
+        self.menu = Menu(self)
+        self.game = Game(self, self.cursor)
+        self.scores = Score(self)
 
         # to-do state machine
         self.statedict = {
             1: 'Menu',
-            2: 'Game'
+            2: 'Game',
+            3: 'Scores'
         }
         self.state = 'Game'
         # start game loop
@@ -60,18 +63,8 @@ class App:
                     self.running = False
 
                 if event.type == pygame.MOUSEBUTTONUP:
-                    if self.state == 'Game':
-                        if self.game.back_button.checkForClick(event):
-                            self.state = 'Menu'
-                        for i, b in enumerate(self.game.answers_buttons):
-                            if b.checkForClick(event):
-                                self.game.answer_index = i+1
-                    if self.state == 'Menu':
-                        for i, b in enumerate(self.menu.btn_list):
-                            if b.checkForClick(event):
-                                time.sleep(0.1)
-                                self.state = 'Game'
-                                self.game.timer.reset()
+                    pass
+
 
                 # keyboard inputs
                 if event.type == pygame.KEYDOWN:
@@ -83,8 +76,12 @@ class App:
             # switch states
             if self.state == 'Menu':
                 self.menu.update()
-            if self.state == 'Game':
+            elif self.state == 'Game':
                 self.game.update()
+            elif self.state == 'Scores':
+                self.scores.update()
+
+            self.button_events()
             # after updates go to draw
             self.draw()
 
@@ -94,7 +91,30 @@ class App:
         # switch states
         if self.state == 'Menu':
             self.menu.draw()
-        if self.state == 'Game':
+        elif self.state == 'Game':
             self.game.draw()
+        elif self.state == 'Scores':
+            self.scores.draw()
         # update changes
         pygame.display.flip()
+
+    def button_events(self):
+        if self.state == 'Menu':
+            for i, b in enumerate(self.menu.btn_list):
+                if b.isClicked('start'):
+                    time.sleep(0.1)
+                    self.state = 'Game'
+                    self.game.reset()
+                elif b.isClicked('easy'):
+                    self.difficulte = 1
+                elif b.isClicked('medium'):
+                    self.difficulte = 2
+                elif b.isClicked('hard'):
+                    self.difficulte = 3
+
+        elif self.state == 'Game':
+            if self.game.back_button.isClicked():
+                self.state = 'Menu'
+            for i, b in enumerate(self.game.answers_buttons):
+                if b.isClicked():
+                    self.game.answer_index = i+1

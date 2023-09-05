@@ -2,11 +2,13 @@ import pygame
 import time
 
 class Button:
-    def __init__(self, screen, x, y, path="img/boutons/reponses/rep_nopush_bleu.png"):
+    def __init__(self, screen, x, y, path="img/boutons/reponses/rep_nopush_bleu.png", name=""):
         self.screen = screen
         self.x = x
         self.y = y
         self.img_path = path
+        self.name = name
+        self.clickedOnce = False
 
         # load images
         self.unpushed_img = pygame.image.load(self.img_path)
@@ -33,8 +35,24 @@ class Button:
         else:
             self.screen.blit(self.unpushed_img, (self.x, self.y))
 
-    def checkForClick(self, event):
+    def checkForClick(self):
         x, y = pygame.mouse.get_pos()
-        if x > self.x and x < self.x + self.w and y > self.y and y < self.y + self.h:
-            self.pushed = True
         return x > self.x and x < self.x + self.w and y > self.y and y < self.y + self.h
+
+    def isClicked(self, name=""):
+        if name == "":
+            pass
+        else:
+            if self.name != name:
+                return False
+        # if pressed, return true once and change clickedOnce to false until not pressed anymore
+        if pygame.mouse.get_pressed()[0] and self.checkForClick():
+            if not self.clickedOnce:
+                self.clickedOnce = True
+                self.pushed = True
+                return True
+            else:
+                return False
+        else:
+            self.clickedOnce = False
+            return False

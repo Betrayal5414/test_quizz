@@ -5,7 +5,7 @@ import constants as C
 import random
 
 class Game:
-    def __init__(self, app, cursor, diff):
+    def __init__(self, app, cursor):
         # get app's screen to draw on
         self.app = app
         self.screen = app.screen
@@ -22,13 +22,14 @@ class Game:
         self.back_button = Button(self.screen, C.WIN_X-300, 40)
 
         # question-answers attributes
+        self.diff = self.app.difficulte
         self.answer_index = 0
         self.question_i = 0
         self.max_index = 39
 
         # récupère les questions dans la DB
         self.cursor = cursor
-        self.cursor.execute(f"SELECT * FROM questions WHERE difficulte = {diff}")
+        self.cursor.execute(f"SELECT * FROM questions WHERE difficulte_id =  {self.diff}")
         self.liste_questions = self.cursor.fetchall()
         # choisis une question
         self.next_question()
@@ -45,13 +46,18 @@ class Game:
             b.update()
         self.back_button.update()
 
+        # vérifie si l'user a appuyé sur une réponse et si c'est la bonne
         if not self.answer_index == 0:
             if self.answer_index == self.bonne_reponse + 1:
                 print("GG!")
+                # get score depending on time spend
+                self._score += round(C.max_points * (self.timer.chrono/self.timer.sec))
                 self.next_question()
                 self.timer.reset()
-                self._score += 10
             self.answer_index = 0
+
+        if self.question_i > 10:
+            self.reset()
 
 
 
@@ -77,6 +83,8 @@ class Game:
         # texte bouton retour menu
         C.blit_text(self.screen, 'Quit', C.quit_text_pos, 280, C.font_karmatic, '#b01010')
 
+        # affichage texte difficulté
+
 
     def next_question(self):
         # get random question in list
@@ -87,7 +95,7 @@ class Game:
         self.max_index -= 1
         self.question_i += 1
         # get the 4 adequate answers from DB
-        self.cursor.execute(f"SELECT * FROM reponses WHERE question_id = {self.current_question[0]}")
+        self.cursor.execute(f"SELECT * FROM reponses WHERE questions_id = {self.current_question[0]}")
         self.liste_reponses = self.cursor.fetchall()
         # find right answer
         for i, r in enumerate(self.liste_reponses):
@@ -97,8 +105,13 @@ class Game:
         self.timer.reset()
         # si il n'y a plus de question, retour menu et reset liste
         if self.max_index < 0:
-            self.cursor.execute(f"SELECT * FROM questions WHERE difficulte = 2")
-            self.liste_questions = self.cursor.fetchall()
-            self.max_index = 39
-            self.question_i = 0
-            self.app.state = 'Menu'
+            self.reset()
+
+    def reset(self):
+        self.cursor.execute(f"SELECT * FROM questions WHERE difficulte_id = 2")
+        self.liste_questions = self.cursor.fetchall()
+        self.max_index = 39
+        self.question_i = 0
+        self.timer.reset()
+        self.app.scores.set_scores(self._score)
+        self.app.state = 'Scores'
