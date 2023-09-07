@@ -10,6 +10,9 @@ class Score:
         self.p1_score = 0
         self.p2_score = 0
 
+        self.p1_name = ""
+        self.p2_name = ""
+
         self.button = Button(self.screen, 15, 15, "img/boutons/menu/menu_nopush.png", 'menu')
 
 
@@ -22,21 +25,21 @@ class Score:
         #C.blit_text(self.screen, 'les scores!', (C.WIN_X/2,C.WIN_Y/2), C.WIN_X, C.font_karmatic, 'white')
         self.button.draw()
 
-        C.blit_text(self.screen, f"Score du joueur 1...   {self.p1_score} !",
+        C.blit_text(self.screen, f"Score de {self.p1_name}: {self.p1_score} !",
                     (C.WIN_X/2, 300), C.WIN_X, C.font_karmatic, 'white')
-        C.blit_text(self.screen, f"Score du joueur 1: {self.p1_score} !",
-                    (C.WIN_X/2, 400), C.WIN_X, C.font_kemco, 'white')
-        C.blit_text(self.screen, f"Score du joueur 1: {self.p1_score} !",
-                    (C.WIN_X/2, 500), C.WIN_X, C.font_symtext, 'white')
-        C.blit_text(self.screen, f"Score du joueur 1: {self.p1_score} !",
-                    (C.WIN_X/2, 600), C.WIN_X, C.font_pixelop, 'white')
+        C.blit_text(self.screen, f"Score de {self.p2_name}: {self.p2_score} !",
+                    (C.WIN_X / 2, 420), C.WIN_X, C.font_karmatic, 'white')
+
 
     def button_events(self):
         if self.button.isClicked('menu'):
             self.app.state = 'Menu'
 
-    def set_scores(self, score1=None, score2=None):
-        if not score1 == None:
-            self.p1_score += score1
-        if not score2 == None:
-            self.p2_score += score2
+    def set_scores(self, score1=(None, ""), score2=(None, "")):
+        if not score1[1] == None:
+            self.p1_score += score1[1]
+        if not score2[1] == None:
+            self.p2_score += score2[1]
+        self.p1_name = score1[0]
+        self.p2_name = score2[0]
+

@@ -2,16 +2,15 @@ import pygame
 import time
 
 class Button:
-    def __init__(self, screen, x, y, path="img/boutons/reponses/rep_nopush_bleu.png", name=""):
+    def __init__(self, screen, x, y, img, name=""):
         self.screen = screen
         self.x = x
         self.y = y
-        self.img_path = path
         self.name = name
         self.clickedOnce = False
 
         # load images
-        self.unpushed_img = pygame.image.load(self.img_path)
+        self.unpushed_img = img
         self.pushed_img = pygame.image.load("img/boutons/reponses/rep_push_bleu.png")
 
         # initialise width et height selon la taille de l'image

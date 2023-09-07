@@ -22,7 +22,7 @@ class App:
 
         # pygame initialisation
         pygame.init()
-        self.screen = pygame.display.set_mode((1280, 720)) # taille de la fenêtre
+        self.screen = pygame.display.set_mode(C.WIN_SIZE) # taille de la fenêtre
 
         # titre de la fenêtre
         pygame.display.set_caption('Le quizz des gamerzz')
@@ -34,8 +34,8 @@ class App:
         #
 
         self.menu = Menu(self)
-        self.game = Game(self, self.cursor)
         self.scores = Score(self)
+        self.game = Game(self)
 
         # to-do state machine
         self.statedict = {
@@ -43,7 +43,7 @@ class App:
             2: 'Game',
             3: 'Scores'
         }
-        self.state = 'Game'
+        self.state = 'Menu'
         # start game loop
         self.loop()
 
@@ -57,7 +57,8 @@ class App:
             dt = self.clock.tick(self.fps)
 
             # check pygame events (user inputs)
-            for event in pygame.event.get():
+            events = pygame.event.get()
+            for event in events:
                 # quit program ('normalement' avec la croix ou alt-f4)
                 if event.type == pygame.QUIT:
                     self.running = False
@@ -75,7 +76,7 @@ class App:
 
             # switch states
             if self.state == 'Menu':
-                self.menu.update()
+                self.menu.update(events)
             elif self.state == 'Game':
                 self.game.update()
             elif self.state == 'Scores':
@@ -84,6 +85,7 @@ class App:
             self.button_events()
             # after updates go to draw
             self.draw()
+
 
 
     def draw(self):
@@ -102,7 +104,8 @@ class App:
         if self.state == 'Menu':
             for i, b in enumerate(self.menu.btn_list):
                 if b.isClicked('start'):
-                    time.sleep(0.1)
+                    # time.sleep(0.1)
+                    self.game.nom_joueurs = [self.menu.text_input.input.value, self.menu.text_input2.input.value]
                     self.state = 'Game'
                     self.game.reset()
                 elif b.isClicked('easy'):
@@ -118,3 +121,5 @@ class App:
             for i, b in enumerate(self.game.answers_buttons):
                 if b.isClicked():
                     self.game.answer_index = i+1
+
+

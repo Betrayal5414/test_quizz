@@ -6,7 +6,8 @@ WIN_X = 1280
 WIN_Y = 720
 
 # Game values
-max_points = 20
+max_points = 150
+min_points = 30
 
 # coords
 question_number_pos = (180,215)
@@ -15,7 +16,12 @@ start_text_pos = (WIN_X-225, 480)
 quit_text_pos = (WIN_X-200, 22)
 
 # images
-
+img_name_input = pygame.image.load("img/boutons/menu/player_name.png")
+img_menu_background = pygame.image.load("img/menu_principal.png")
+img_menu_start = pygame.image.load("img/boutons/menu/menu_nopush.png")
+img_facile = pygame.image.load("img/boutons/menu/difficulte_1.png")
+img_moyen = pygame.image.load("img/boutons/menu/difficulte_2.png")
+img_difficile = pygame.image.load("img/boutons/menu/difficulte_3.png")
 
 
 # fonts
@@ -26,7 +32,7 @@ font_pixelop = pygame.font.Font("fonts/PixelOperator.ttf", 36)
 font_pixelop8 = pygame.font.Font("fonts/PixelOperator8.ttf", 20)
 font_pixelop8small = pygame.font.Font("fonts/PixelOperator8.ttf", 12)
 font_symtext = pygame.font.Font("fonts/Symtext.ttf", 32)
-font_kemco = pygame.font.Font("fonts/Kemco_Pixel_Bold.ttf", 32)
+font_kemco = pygame.font.Font("fonts/Kemco_Pixel_Bold.ttf", 26)
 
 # colors
 D_GREEN = "#004428"
@@ -94,7 +100,6 @@ color_index = {
 def blit_text(surface, text, pos, max_width, font, color=pygame.Color('black')):
     words = [word.split(' ') for word in text.splitlines()]  # 2D array where each row is a list of words.
     space = font.size(' ')[0]  # The width of a space.
-
     x, y = pos
     for line in words:
         for word in line:
