@@ -18,12 +18,12 @@ class Game:
         # initialize timer-bars and buttons
         self.timer = Timer_Bar(self.screen, 40, 70, 15, C.colors['Blue'])
         self.answers_buttons = [
-            Button(self.screen, 40, C.WIN_Y - 100),
-            Button(self.screen, 340, C.WIN_Y - 100),
-            Button(self.screen, 640, C.WIN_Y - 100),
-            Button(self.screen, 940, C.WIN_Y - 100)
+            Button(self.screen, 40, C.WIN_Y - 100, C.img_reponse),
+            Button(self.screen, 340, C.WIN_Y - 100, C.img_reponse),
+            Button(self.screen, 640, C.WIN_Y - 100, C.img_reponse),
+            Button(self.screen, 940, C.WIN_Y - 100, C.img_reponse)
         ]
-        self.back_button = Button(self.screen, C.WIN_X-300, 40)
+        self.back_button = Button(self.screen, C.WIN_X-300, 40, C.img_reponse)
 
         # question-answers attributes
         self.answer_index = 0

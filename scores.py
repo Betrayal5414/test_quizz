@@ -13,7 +13,7 @@ class Score:
         self.p1_name = ""
         self.p2_name = ""
 
-        self.button = Button(self.screen, 15, 15, "img/boutons/menu/menu_nopush.png", 'menu')
+        self.button = Button(self.screen, 15, 15, C.img_menu_start, 'menu')
 
 
     def update(self):

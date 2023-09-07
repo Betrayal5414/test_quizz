@@ -22,6 +22,7 @@ img_menu_start = pygame.image.load("img/boutons/menu/menu_nopush.png")
 img_facile = pygame.image.load("img/boutons/menu/difficulte_1.png")
 img_moyen = pygame.image.load("img/boutons/menu/difficulte_2.png")
 img_difficile = pygame.image.load("img/boutons/menu/difficulte_3.png")
+img_reponse = pygame.image.load("img/boutons/reponses/rep_nopush_bleu.png")
 
 
 # fonts
