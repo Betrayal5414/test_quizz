@@ -2,10 +2,10 @@ import pygame
 import time
 
 class Button:
-    def __init__(self, screen, x, y, img, name=""):
+    def __init__(self, screen, pos, img, name=""):
         self.screen = screen
-        self.x = x
-        self.y = y
+        self.x = pos[0]
+        self.y = pos[1]
         self.name = name
         self.clickedOnce = False
 
@@ -29,10 +29,14 @@ class Button:
 
     def draw(self):
         # affiche la bonne image selon si le bouton est pressé ou non
-        if self.pushed:
+        # à faire - compléter la variable à vérifier
+        '''
+        if ??????:
             self.screen.blit(self.pushed_img, (self.x, self.y))
         else:
             self.screen.blit(self.unpushed_img, (self.x, self.y))
+        '''
+        pass
 
     def checkForClick(self):
         x, y = pygame.mouse.get_pos()

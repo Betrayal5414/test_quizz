@@ -7,6 +7,7 @@ from timer_bar import Timer_Bar
 from button import Button
 import constants as C
 from menu import Menu
+from options import Options
 from game import Game
 from scores import Score
 
@@ -34,14 +35,16 @@ class App:
         #
 
         self.menu = Menu(self)
+        self.options = Options(self)
         self.scores = Score(self)
         self.game = Game(self)
 
         # to-do state machine
         self.statedict = {
             1: 'Menu',
-            2: 'Game',
-            3: 'Scores'
+            2: 'Options',
+            3: 'Game',
+            4: 'Scores'
         }
         self.state = 'Menu'
         # start game loop
@@ -63,9 +66,6 @@ class App:
                 if event.type == pygame.QUIT:
                     self.running = False
 
-                if event.type == pygame.MOUSEBUTTONUP:
-                    pass
-
 
                 # keyboard inputs
                 if event.type == pygame.KEYDOWN:
@@ -77,6 +77,8 @@ class App:
             # switch states
             if self.state == 'Menu':
                 self.menu.update(events)
+            elif self.state == 'Options':
+                self.options.update()
             elif self.state == 'Game':
                 self.game.update()
             elif self.state == 'Scores':
@@ -93,6 +95,8 @@ class App:
         # switch states
         if self.state == 'Menu':
             self.menu.draw()
+        elif self.state == 'Options':
+            self.options.draw()
         elif self.state == 'Game':
             self.game.draw()
         elif self.state == 'Scores':
@@ -104,22 +108,17 @@ class App:
         if self.state == 'Menu':
             for i, b in enumerate(self.menu.btn_list):
                 if b.isClicked('start'):
-                    # time.sleep(0.1)
-                    self.game.nom_joueurs = [self.menu.text_input.input.value, self.menu.text_input2.input.value]
-                    self.state = 'Game'
-                    self.game.reset()
-                elif b.isClicked('easy'):
-                    self.difficulte = 1
-                elif b.isClicked('medium'):
-                    self.difficulte = 2
-                elif b.isClicked('hard'):
-                    self.difficulte = 3
+                    self.state = 'Options'
 
         elif self.state == 'Game':
             if self.game.back_button.isClicked():
-                self.state = 'Menu'
+                self.state = 'Options'
             for i, b in enumerate(self.game.answers_buttons):
                 if b.isClicked():
                     self.game.answer_index = i+1
 
 
+    def set_state(self, state):
+        # à faire - fonction qui vérifie que le parametre existe dans self.statedict
+        # et modifie le self.state accordément
+        pass

@@ -13,7 +13,7 @@ class Score:
         self.p1_name = ""
         self.p2_name = ""
 
-        self.button = Button(self.screen, 15, 15, C.img_menu_start, 'menu')
+        self.button = Button(self.screen, (15, 15), C.img_menu_start, 'menu')
 
 
     def update(self):
@@ -22,7 +22,6 @@ class Score:
         self.button_events()
 
     def draw(self):
-        #C.blit_text(self.screen, 'les scores!', (C.WIN_X/2,C.WIN_Y/2), C.WIN_X, C.font_karmatic, 'white')
         self.button.draw()
 
         C.blit_text(self.screen, f"Score de {self.p1_name}: {self.p1_score} !",

@@ -10,20 +10,20 @@ class Game:
         self.app = app
         self.screen = app.screen
         # load background image
-        self.ingame_img = pygame.image.load("img/questions/fond_bleu.png")
+        self.ingame_img = pygame.image.load("img/background/questions/fond_bleu.png")
         # sounds
         pygame.mixer.init()
         self.sound_juste = pygame.mixer.Sound("sounds/juste.wav")
         self.sound_faux = pygame.mixer.Sound("sounds/faux.wav")
         # initialize timer-bars and buttons
-        self.timer = Timer_Bar(self.screen, 40, 70, 15, C.colors['Blue'])
+        self.timer = Timer_Bar(self.screen, 40, 70, C.time_per_question, C.colors['Blue'])
         self.answers_buttons = [
-            Button(self.screen, 40, C.WIN_Y - 100, C.img_reponse),
-            Button(self.screen, 340, C.WIN_Y - 100, C.img_reponse),
-            Button(self.screen, 640, C.WIN_Y - 100, C.img_reponse),
-            Button(self.screen, 940, C.WIN_Y - 100, C.img_reponse)
+            Button(self.screen, (40, C.WIN_Y - 100), C.img_reponse),
+            Button(self.screen, (340, C.WIN_Y - 100), C.img_reponse),
+            Button(self.screen, (640, C.WIN_Y - 100), C.img_reponse),
+            Button(self.screen, (940, C.WIN_Y - 100), C.img_reponse)
         ]
-        self.back_button = Button(self.screen, C.WIN_X-300, 40, C.img_reponse)
+        self.back_button = Button(self.screen, (C.WIN_X-300, 40), C.img_reponse)
 
         # question-answers attributes
         self.answer_index = 0
@@ -33,7 +33,8 @@ class Game:
         # récupère les questions dans la DB
         self.cursor = self.app.cursor
 
-
+        # var utilisée pour délayer l'appuie sur 'quitter' après l'entrée en jeu
+        self.back_button_timer = 0
 
         # initialize text surface for "Question 1"
         self.question_title_surface = pygame.surface.Surface((390,215))
@@ -56,7 +57,6 @@ class Game:
         # vérifie si l'user a appuyé sur une réponse et si c'est la bonne
         if not self.answer_index == 0:
             if self.answer_index == self.bonne_reponse + 1:
-                print("GG!")
                 # get score depending on time spent
                 self.scores[self.player] += max(round(
                     C.max_points * (self.timer.chrono/self.timer.sec)), C.min_points)
@@ -87,9 +87,9 @@ class Game:
 
         # texte numéro question
         self.txt_surface = C.font_karmatic.render(f"Question  {self.question_i}", False, (0, 0, 0))
-        self.screen.blit(self.txt_surface, C.question_number_pos)
+        self.screen.blit(self.txt_surface, C.pos_question_number)
         # intitulé question
-        C.blit_text(self.screen, self.current_question[1], (C.question_title_pos), 430, C.font_pixelop8, 'black')
+        C.blit_text(self.screen, self.current_question[1], (C.pos_question_title), 430, C.font_pixelop8, 'black')
         # affichage texte réponses
         for i, r in enumerate(self.liste_reponses):
             C.blit_text(self.screen, r[1], (70+300*i, 650), 280+300*i, C.font_pixelop8small, 'white')
@@ -104,7 +104,7 @@ class Game:
                         (C.WIN_X - 350, 200), C.WIN_X, C.font_karmatic, 'white')
 
         # texte bouton retour menu
-        C.blit_text(self.screen, 'Quit', C.quit_text_pos, 280, C.font_karmatic, '#b01010')
+        C.blit_text(self.screen, 'Quit', C.pos_quit_text, 280, C.font_karmatic, '#b01010')
 
         # affichage texte difficulté
 

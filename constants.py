@@ -8,20 +8,36 @@ WIN_Y = 720
 # Game values
 max_points = 150
 min_points = 30
+time_per_question = 20
 
 # coords
-question_number_pos = (180,215)
-question_title_pos = (110,280)
-start_text_pos = (WIN_X-225, 480)
-quit_text_pos = (WIN_X-200, 22)
+pos_question_number = (180,215)
+pos_question_title = (110,280)
+pos_start_text = (WIN_X-225, 480)
+pos_quit_text = (WIN_X-200, 22)
+
+pos_menu_quit = (1036,40)
+pos_menu_start = (1036,415)
+pos_menu_regle = (1036,500)
+pos_menu_score = (1036,585)
+
+pos_options_start = (55,40)
+pos_options_retour = (1036,40)
+pos_options_1joueur = (240,250)
+pos_options_2joueur = (760,250)
+pos_options_nom_1 = (240,350)
+pos_options_nom2 = (760,350)
+pos_options_easy = (180,590)
+pos_options_medium = (500,590)
+pos_options_hard = (820,590)
 
 # images
 img_name_input = pygame.image.load("img/boutons/menu/player_name.png")
-img_menu_background = pygame.image.load("img/menu_principal.png")
+img_menu_background = pygame.image.load("img/background/menus/background.png")
 img_menu_start = pygame.image.load("img/boutons/menu/menu_nopush.png")
-img_facile = pygame.image.load("img/boutons/menu/difficulte_1.png")
-img_moyen = pygame.image.load("img/boutons/menu/difficulte_2.png")
-img_difficile = pygame.image.load("img/boutons/menu/difficulte_3.png")
+img_facile = pygame.image.load("img/boutons/menu/noob_nopush.png")
+img_moyen = pygame.image.load("img/boutons/menu/gamer_nopush.png")
+img_difficile = pygame.image.load("img/boutons/menu/progamer_nopush.png")
 img_reponse = pygame.image.load("img/boutons/reponses/rep_nopush_bleu.png")
 
 
