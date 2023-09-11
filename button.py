@@ -12,6 +12,7 @@ class Button:
         # load images
         self.unpushed_img = img
         self.pushed_img = pushed_img
+        self.visible = True
 
         # initialise width et height selon la taille de l'image
         self.w = self.unpushed_img.get_width()
@@ -29,10 +30,11 @@ class Button:
             self.t = 0
 
     def draw(self):
-        if self.pushed:
-            self.screen.blit(self.pushed_img, (self.x, self.y))
-        else:
-            self.screen.blit(self.unpushed_img, (self.x, self.y))
+        if self.visible:
+            if self.pushed:
+                self.screen.blit(self.pushed_img, (self.x, self.y))
+            else:
+                self.screen.blit(self.unpushed_img, (self.x, self.y))
 
     def checkForClick(self):
         x, y = pygame.mouse.get_pos()
@@ -60,3 +62,7 @@ class Button:
     def change_color(self, color):
         self.unpushed_img = pygame.image.load(f"img/boutons/questions/rep_nopush_{color}.png")
         self.pushed_img = pygame.image.load(f"img/boutons/questions/rep_push_{color}.png")
+
+    def change_image(self, image1, image2):
+        self.unpushed_img = image1
+        self.pushed_img = image2

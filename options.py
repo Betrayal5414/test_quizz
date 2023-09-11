@@ -12,6 +12,9 @@ class Options:
         self.app.cursor.execute(f"SELECT intitule_diff FROM difficulte WHERE difficulte_id < 4")
         self.diff_names = self.app.cursor.fetchall()
 
+        self.j1 = 0
+        self.j2 = 1
+
         self.btn_list = [
             Button(self.screen, C.pos_options_start, C.img_menu_start, C.img_menu_start_push, 'start'),
             Button(self.screen, C.pos_options_easy, C.img_facile, C.img_facile_push, 'easy', True),
@@ -20,6 +23,8 @@ class Options:
             Button(self.screen, C.pos_options_retour, C.img_menu_start, C.img_menu_start_push, 'quit'),
             Button(self.screen, C.pos_options_1joueur, C.img_moyen, C.img_moyen_push, '1-player', True),
             Button(self.screen, C.pos_options_2joueur, C.img_moyen, C.img_moyen_push, '2-player', True),
+            Button(self.screen, C.pos_options_icon1, C.img_options_icones[0], C.img_options_icones[0], 'icone_j1'),
+            Button(self.screen, C.pos_options_icon2, C.img_options_icones[1], C.img_options_icones[1], 'icone_j2')
         ]
 
         self.text_inputs = [
@@ -30,6 +35,7 @@ class Options:
         # on appuie sur les boutons réglages par ddéfaut (1 joueur et difficulté récupérée dans l'app - par défaut 1)
         self.btn_list[self.app.difficulte].pushed = True
         self.btn_list[5].pushed = True
+        self.btn_list[8].visible = False
 
     def update(self, events):
         # updates and check events of button
@@ -78,20 +84,34 @@ class Options:
 
             elif b.isClicked('1-player'):
                 self.text_inputs[1].visible = False
+                self.btn_list[8].visible = False
                 self.btn_list[6].pushed = False
                 self.app.game.nbr_players = 1
 
             elif b.isClicked('2-player'):
                 self.text_inputs[1].visible = True
+                self.btn_list[8].visible = True
                 self.btn_list[5].pushed = False
                 self.app.game.nbr_players = 2
 
             elif b.isClicked('quit'):
-                if self.app.quit:
-                    self.app.set_state('Menu')
-                    self.app.quit = False
-                else:
-                    self.app.quit = True
+                self.app.set_state('Menu')
+
+            elif b.isClicked('icone_j1'):
+                self.j1 += 1
+                if self.j1 > len(C.img_options_icones) - 1:
+                    self.j1 = 0
+                if self.j1 == self.j2:
+                    self.j1 += 1
+                b.change_image(C.img_options_icones[self.j1], C.img_options_icones[self.j1])
+
+            elif b.isClicked('icone_j2'):
+                self.j2 += 1
+                if self.j2 > len(C.img_options_icones) - 1:
+                    self.j2 = 0
+                if self.j2 == self.j1:
+                    self.j2 += 1
+                b.change_image(C.img_options_icones[self.j2], C.img_options_icones[self.j2])
 
 
     def draw_text(self):

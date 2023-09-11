@@ -101,7 +101,7 @@ class Game:
             C.blit_text(self.screen, r[1], (70+300*i, 650), 280+300*i, C.font_pixelop8small, 'white')
         # affichage nom joueur en cours
         if self.nbr_players == 2:
-            C.blit_text(self.screen, f"{self.nom_joueurs[self.current_player]}", (C.WIN_X/6, 10), C.WIN_X/1.4, C.font_karmatic30, C.YELLOW)
+            C.blit_text(self.screen, f"{self.nom_joueurs[self.current_player]}", (C.WIN_X/6, 14), C.WIN_X/1.4, C.font_karmatic30, self.background_color)
         # affichage scores
         C.blit_text(self.screen, f"{self.nom_joueurs[0]} : {self.scores[0]}",
                     C.pos_game_score_1, C.WIN_X, C.font_karmatic20, 'white')
@@ -137,7 +137,7 @@ class Game:
         # si il n'y a plus de question, retour menu et reset liste
         if self.max_index < 0:
             self.reset()
-            self.app.set_state('Scores')
+            self.app.set_state('GameOver')
 
     def reset(self):
         # récupère la difficulté depuis l'app

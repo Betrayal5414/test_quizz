@@ -25,10 +25,10 @@ pos_menu_regle_text = (1078,522)
 pos_menu_score = (1036,585)
 pos_menu_score_text = (1076,607)
 
-pos_options_start = (55,40)
-pos_options_start_text = (98,60)
-pos_options_retour = (1036,40)
-pos_options_retour_text = (1075,60)
+pos_options_start = (1036,40)
+pos_options_start_text = (1088,61)
+pos_options_retour = (55,40)
+pos_options_retour_text = (98,61)
 pos_options_1joueur = (240,250)
 pos_options_1joueur_text = (316,275)
 pos_options_2joueur = (760,250)
@@ -41,10 +41,10 @@ pos_options_medium = (500,590)
 pos_options_medium_text = (596,613)
 pos_options_hard = (820,590)
 pos_options_hard_text = (885,613)
-pos_options_bg_text_1 = (56,141)
+pos_options_bg_text_1 = (109,141)
 pos_options_bg_text_2 = (226,473)
-pos_options_icon1 = (200,250)
-pos_options_icon2 = (720,250)
+pos_options_icon1 = (140,245)
+pos_options_icon2 = (660,245)
 
 pos_game_score_1 = (WIN_X-250, 160)
 pos_game_score_2 = (WIN_X-250, 210)
@@ -58,12 +58,19 @@ pos_gameover_rejouer_text = (579,60)
 pos_gameover_scores_text = (1076,60)
 pos_gameover_quitter_text = (96,640)
 
+rect_rules_border = pygame.Rect(WIN_X/6, WIN_Y/8, WIN_X - WIN_X/3, WIN_Y*0.75)
+rect_rules_inside = pygame.Rect(WIN_X/6 +10, WIN_Y/8 +10, WIN_X - WIN_X/3 -20, WIN_Y*0.75 -20)
+pos_rules_text = (WIN_X/6 + 20,WIN_Y/8 + 30)
+pos_rules_margin = 16
+pos_rules_close = (WIN_X/6 -8, WIN_Y/8 - 8)
+
 
 # images
 img_name_input = pygame.image.load("img/boutons/menu/bloc_text.png")
 img_menu_background = pygame.image.load("img/background/menus/background.png")
 img_menu_start = pygame.image.load("img/boutons/menu/menu_nopush.png")
 img_menu_start_push = pygame.image.load("img/boutons/menu/menu_push.png")
+img_rules_close = pygame.image.load("img/boutons/menu/fermer.png")
 img_facile = pygame.image.load("img/boutons/menu/noob_nopush.png")
 img_facile_push = pygame.image.load("img/boutons/menu/noob_push.png")
 img_moyen = pygame.image.load("img/boutons/menu/gamer_nopush.png")
@@ -82,7 +89,19 @@ img_gameover_scores_push = pygame.image.load("img/boutons/menu/go_bleuc_push.png
 img_gameover_scores_nopush = pygame.image.load("img/boutons/menu/go_bleuc_nopush.png")
 img_gameover_quitter_push = pygame.image.load("img/boutons/menu/go_orange_push.png")
 img_gameover_quitter_nopush = pygame.image.load("img/boutons/menu/go_orange_nopush.png")
-
+img_options_icones = [pygame.image.load("img/joueurs/joueur1.png"),
+                      pygame.image.load("img/joueurs/joueur2.png"),
+                      pygame.image.load("img/joueurs/joueur3.png"),
+                      pygame.image.load("img/joueurs/joueur4.png"),
+                      pygame.image.load("img/joueurs/joueur5.png"),
+                      pygame.image.load("img/joueurs/joueur6.png"),
+                      pygame.image.load("img/joueurs/joueur7.png"),
+                      pygame.image.load("img/joueurs/joueur8.png"),
+                      pygame.image.load("img/joueurs/joueur9.png"),
+                      pygame.image.load("img/joueurs/joueur10.png"),
+                      pygame.image.load("img/joueurs/joueur11.png"),
+                      pygame.image.load("img/joueurs/joueur12.png")
+                      ]
 
 
 # fonts
