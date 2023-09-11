@@ -13,7 +13,7 @@ class Score:
         self.p1_name = ""
         self.p2_name = ""
 
-        self.button = Button(self.screen, (15, 15), C.img_menu_start, 'menu')
+        self.button = Button(self.screen, (15, 15), C.img_menu_start, C.img_menu_start_push, 'menu')
 
 
     def update(self):
@@ -25,14 +25,14 @@ class Score:
         self.button.draw()
 
         C.blit_text(self.screen, f"Score de {self.p1_name}: {self.p1_score} !",
-                    (C.WIN_X/2, 300), C.WIN_X, C.font_karmatic, 'white')
+                    (C.WIN_X/2, 300), C.WIN_X, C.font_karmatic20, 'white')
         C.blit_text(self.screen, f"Score de {self.p2_name}: {self.p2_score} !",
-                    (C.WIN_X / 2, 420), C.WIN_X, C.font_karmatic, 'white')
+                    (C.WIN_X / 2, 420), C.WIN_X, C.font_karmatic20, 'white')
 
 
     def button_events(self):
         if self.button.isClicked('menu'):
-            self.app.state = 'Menu'
+            self.app.set_state('Menu')
 
     def set_scores(self, score1=(None, ""), score2=(None, "")):
         if not score1[1] == None:

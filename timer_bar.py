@@ -45,7 +45,7 @@ class Timer_Bar:
             self.x+self.margin, self.y+self.margin, self.w-self.t-self.margin*2, self.h-self.margin*2), 0, self.corners)
 
         # draw chrono text to screen
-        self.txt_surface = C.font_karmatic.render(f"{round(self.chrono, 1)}", False, (0,0,0))
+        self.txt_surface = C.font_karmatic30.render(f"{round(self.chrono, 1)}", False, (0,0,0))
         self.screen.blit(self.txt_surface, (self.x+self.w/2 - self.txt_surface.get_width()/2,
                                             self.y+self.txt_surface.get_height()/2))
 

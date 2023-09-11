@@ -8,47 +8,97 @@ class Options:
         self.app = app
         self.screen = app.screen
 
+        # récupération des noms difficulté dans la BDD
+        self.app.cursor.execute(f"SELECT intitule_diff FROM difficulte WHERE difficulte_id < 4")
+        self.diff_names = self.app.cursor.fetchall()
+
         self.btn_list = [
-            Button(self.screen, C.pos_options_start, C.img_menu_start, 'start'),
-            Button(self.screen, C.pos_options_easy, C.img_facile, 'easy'),
-            Button(self.screen, C.pos_options_medium, C.img_moyen, 'medium'),
-            Button(self.screen, C.pos_options_hard, C.img_difficile, 'hard'),
-            Button(self.screen, C.pos_options_retour, C.img_menu_start, 'quit'),
-            Button(self.screen, C.pos_options_1joueur, C.img_moyen, '1-player'),
-            Button(self.screen, C.pos_options_2joueur, C.img_moyen, '2-player'),
+            Button(self.screen, C.pos_options_start, C.img_menu_start, C.img_menu_start_push, 'start'),
+            Button(self.screen, C.pos_options_easy, C.img_facile, C.img_facile_push, 'easy', True),
+            Button(self.screen, C.pos_options_medium, C.img_moyen, C.img_moyen_push, 'medium', True),
+            Button(self.screen, C.pos_options_hard, C.img_difficile, C.img_difficile_push, 'hard', True),
+            Button(self.screen, C.pos_options_retour, C.img_menu_start, C.img_menu_start_push, 'quit'),
+            Button(self.screen, C.pos_options_1joueur, C.img_moyen, C.img_moyen_push, '1-player', True),
+            Button(self.screen, C.pos_options_2joueur, C.img_moyen, C.img_moyen_push, '2-player', True),
         ]
 
         self.text_inputs = [
-            #Text_Input(self.screen, )
+            Text_Input(self.app, C.pos_options_nom_1),
+            Text_Input(self.app, C.pos_options_nom_2, visible=False)
         ]
 
-    def update(self):
+        # on appuie sur les boutons réglages par ddéfaut (1 joueur et difficulté récupérée dans l'app - par défaut 1)
+        self.btn_list[self.app.difficulte].pushed = True
+        self.btn_list[5].pushed = True
+
+    def update(self, events):
+        # updates and check events of button
         self.button_events()
+        for t in self.text_inputs:
+            t.update(events)
 
     def draw(self):
+        self.screen.fill("#03010d")
         for b in self.btn_list:
             b.draw()
+        for t in self.text_inputs:
+            t.draw()
+        self.draw_text()
 
     def button_events(self):
         for b in self.btn_list:
             b.update()
             if b.isClicked('start'):
-                self.app.state = 'Game'
-                self.app.game.reset()
-                time.sleep(0.2)
-                self.app.game.nom_joueurs = [self.app.menu.text_input.input.value,
-                                             self.app.menu.text_input2.input.value]
+                if self.app.game.nbr_players == 2 and self.text_inputs[1].input.value != "" \
+                        and self.text_inputs[0].input.value != "" \
+                        or self.app.game.nbr_players == 1 and self.text_inputs[0].input.value != "":
+                    self.app.set_state('Game')
+                    self.app.game.reset()
+                    time.sleep(0.2)
+                    self.app.game.nom_joueurs = [self.app.options.text_inputs[0].input.value,
+                                                 self.app.options.text_inputs[1].input.value]
+
             elif b.isClicked('easy'):
-                # à faire
-                pass
+                self.app.difficulte = 1
+                self.btn_list[2].pushed = False
+                self.btn_list[3].pushed = False
 
             elif b.isClicked('medium'):
-                # à faire
-                pass
+                self.app.difficulte = 2
+                self.btn_list[1].pushed = False
+                self.btn_list[3].pushed = False
 
             elif b.isClicked('hard'):
-                # à faire
-                pass
+                self.app.difficulte = 3
+                self.btn_list[1].pushed = False
+                self.btn_list[2].pushed = False
+
+            elif b.isClicked('1-player'):
+                self.text_inputs[1].visible = False
+                self.btn_list[6].pushed = False
+                self.app.game.nbr_players = 1
+
+            elif b.isClicked('2-player'):
+                self.text_inputs[1].visible = True
+                self.btn_list[5].pushed = False
+                self.app.game.nbr_players = 2
 
             elif b.isClicked('quit'):
-                self.app.set_state('Menu')
+                if self.app.quit:
+                    self.app.set_state('Menu')
+                    self.app.quit = False
+                else:
+                    self.app.quit = True
+
+
+    def draw_text(self):
+        C.blit_text(self.screen, 'Start', C.pos_options_start_text, C.WIN_X, C.font_karmatic20)
+        C.blit_text(self.screen, 'Retour', C.pos_options_retour_text, C.WIN_X, C.font_karmatic20)
+        C.blit_text(self.screen, f'{self.diff_names[0][0]}', C.pos_options_easy_text, C.WIN_X, C.font_karmatic20)
+        C.blit_text(self.screen, f'{self.diff_names[1][0]}', C.pos_options_medium_text, C.WIN_X, C.font_karmatic20)
+        C.blit_text(self.screen, f'{self.diff_names[2][0]}', C.pos_options_hard_text, C.WIN_X, C.font_karmatic20)
+        C.blit_text(self.screen, '1 Joueur', C.pos_options_1joueur_text, C.WIN_X, C.font_karmatic20)
+        C.blit_text(self.screen, '2 Joueurs', C.pos_options_2joueur_text, C.WIN_X, C.font_karmatic20)
+        C.blit_text(self.screen, 'Choisir le nombre de joueurs', C.pos_options_bg_text_1, C.WIN_X+50, C.font_karmatic50, 'white')
+        C.blit_text(self.screen, 'Choisir la difficulte', C.pos_options_bg_text_2, C.WIN_X, C.font_karmatic50, 'white')
+

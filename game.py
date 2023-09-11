@@ -9,8 +9,6 @@ class Game:
         # get app's screen to draw on
         self.app = app
         self.screen = app.screen
-        # load background image
-        self.ingame_img = pygame.image.load("img/background/questions/fond_bleu.png")
         # sounds
         pygame.mixer.init()
         self.sound_juste = pygame.mixer.Sound("sounds/juste.wav")
@@ -39,10 +37,18 @@ class Game:
         # initialize text surface for "Question 1"
         self.question_title_surface = pygame.surface.Surface((390,215))
 
+        # couleurs de fond possibles
+        self.possible_colors = ['blue', 'green', 'cyan', 'yellow', 'grey', 'orange', 'red', 'purple']
+        self.background_color = random.choice(self.possible_colors)
+
+        # load background image
+        self.ingame_img = pygame.image.load(f"img/background/questions/fond_{self.background_color}.png")
+
         # noms joueurs et scores
         self.nom_joueurs = ["",""]
         self.scores = [0, 0]
-        self.player = 0
+        self.current_player = 0
+        self.nbr_players = 1
 
         # choisis une question
         self.reset()
@@ -58,7 +64,7 @@ class Game:
         if not self.answer_index == 0:
             if self.answer_index == self.bonne_reponse + 1:
                 # get score depending on time spent
-                self.scores[self.player] += max(round(
+                self.scores[self.current_player] += max(round(
                     C.max_points * (self.timer.chrono/self.timer.sec)), C.min_points)
                 self.next_question()
                 self.timer.reset()
@@ -75,7 +81,7 @@ class Game:
 
         if self.question_i > 10:
             self.reset()
-            self.app.state = 'Scores'
+            self.app.set_state('Scores')
 
 
     def draw(self):
@@ -86,7 +92,7 @@ class Game:
         self.back_button.draw()
 
         # texte numéro question
-        self.txt_surface = C.font_karmatic.render(f"Question  {self.question_i}", False, (0, 0, 0))
+        self.txt_surface = C.font_karmatic30.render(f"Question  {self.question_i}", False, (0, 0, 0))
         self.screen.blit(self.txt_surface, C.pos_question_number)
         # intitulé question
         C.blit_text(self.screen, self.current_question[1], (C.pos_question_title), 430, C.font_pixelop8, 'black')
@@ -94,17 +100,17 @@ class Game:
         for i, r in enumerate(self.liste_reponses):
             C.blit_text(self.screen, r[1], (70+300*i, 650), 280+300*i, C.font_pixelop8small, 'white')
         # affichage nom joueur en cours
-        if self.nom_joueurs[1] != "":
-            C.blit_text(self.screen, f"{self.nom_joueurs[self.player]}", (C.WIN_X/6, 10), C.WIN_X/1.4, C.font_karmatic, C.YELLOW)
+        if self.nbr_players == 2:
+            C.blit_text(self.screen, f"{self.nom_joueurs[self.current_player]}", (C.WIN_X/6, 10), C.WIN_X/1.4, C.font_karmatic30, C.YELLOW)
         # affichage scores
         C.blit_text(self.screen, f"{self.nom_joueurs[0]} : {self.scores[0]}",
-                    (C.WIN_X-350, 130), C.WIN_X, C.font_karmatic, 'white')
-        if self.nom_joueurs[1] != "":
+                    C.pos_game_score_1, C.WIN_X, C.font_karmatic20, 'white')
+        if self.nbr_players == 2:
             C.blit_text(self.screen, f"{self.nom_joueurs[1]} : {self.scores[1]}",
-                        (C.WIN_X - 350, 200), C.WIN_X, C.font_karmatic, 'white')
+                        C.pos_game_score_2, C.WIN_X, C.font_karmatic20, 'white')
 
         # texte bouton retour menu
-        C.blit_text(self.screen, 'Quit', C.pos_quit_text, 280, C.font_karmatic, '#b01010')
+        C.blit_text(self.screen, 'Quit', C.pos_quit_text, 280, C.font_karmatic30, '#b01010')
 
         # affichage texte difficulté
 
@@ -118,7 +124,7 @@ class Game:
         self.max_index -= 1
         self.question_i += 1
         if self.nom_joueurs[1] != "":
-            self.player = 1- self.player
+            self.current_player = 1- self.current_player
         # get the 4 adequate answers from DB
         self.cursor.execute(f"SELECT * FROM reponses WHERE questions_id = {self.current_question[0]}")
         self.liste_reponses = self.cursor.fetchall()
@@ -131,7 +137,7 @@ class Game:
         # si il n'y a plus de question, retour menu et reset liste
         if self.max_index < 0:
             self.reset()
-            self.app.state = 'Scores'
+            self.app.set_state('Scores')
 
     def reset(self):
         self.diff = self.app.difficulte
@@ -143,3 +149,7 @@ class Game:
         self.timer.reset()
         self.app.scores.set_scores((self.nom_joueurs[0], self.scores[0]), (self.nom_joueurs[1], self.scores[1]))
         self.scores = [0, 0]
+        self.background_color = random.choice(self.possible_colors)
+        self.ingame_img = pygame.image.load(f"img/background/questions/fond_{self.background_color}.png")
+        for b in self.answers_buttons:
+            b.change_color(self.background_color)

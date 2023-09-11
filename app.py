@@ -1,10 +1,6 @@
-import random
-import time
 import pygame
 import sqlite3
 import sys
-from timer_bar import Timer_Bar
-from button import Button
 import constants as C
 from menu import Menu
 from options import Options
@@ -23,6 +19,7 @@ class App:
 
         # pygame initialisation
         pygame.init()
+        pygame.key.set_repeat(500, 64)
         self.screen = pygame.display.set_mode(C.WIN_SIZE) # taille de la fenêtre
 
         # titre de la fenêtre
@@ -32,7 +29,9 @@ class App:
 
         self.clock = pygame.time.Clock()
         self.fps = 60
-        #
+
+        # double check for quit
+        self.quit = False
 
         self.menu = Menu(self)
         self.options = Options(self)
@@ -44,7 +43,7 @@ class App:
             1: 'Menu',
             2: 'Options',
             3: 'Game',
-            4: 'Scores'
+            4: 'Scores',
         }
         self.state = 'Menu'
         # start game loop
@@ -76,9 +75,9 @@ class App:
 
             # switch states
             if self.state == 'Menu':
-                self.menu.update(events)
+                self.menu.update()
             elif self.state == 'Options':
-                self.options.update()
+                self.options.update(events)
             elif self.state == 'Game':
                 self.game.update()
             elif self.state == 'Scores':
@@ -105,12 +104,8 @@ class App:
         pygame.display.flip()
 
     def button_events(self):
-        if self.state == 'Menu':
-            for i, b in enumerate(self.menu.btn_list):
-                if b.isClicked('start'):
-                    self.state = 'Options'
 
-        elif self.state == 'Game':
+        if self.state == 'Game':
             if self.game.back_button.isClicked():
                 self.state = 'Options'
             for i, b in enumerate(self.game.answers_buttons):
@@ -119,6 +114,6 @@ class App:
 
 
     def set_state(self, state):
-        # à faire - fonction qui vérifie que le parametre existe dans self.statedict
-        # et modifie le self.state accordément
-        pass
+        for k,v in self.statedict.items():
+            if state == v:
+                self.state = state

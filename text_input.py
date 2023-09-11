@@ -3,16 +3,16 @@ import constants as C
 import pygame_textinput
 
 class Text_Input:
-    def __init__(self, app, x, y, name=""):
+    def __init__(self, app, pos, visible=True, name=""):
         self.app = app
         self.screen = app.screen
-        self.x = x
-        self.y = y
+        self.x, self.y = pos
         self.name = name
         self.txt = ""
 
         self.clickedOnce = False
         self.pushed = False
+        self.visible = visible
 
         self.img = C.img_name_input
         self.input = pygame_textinput.TextInputVisualizer(font_object=C.font_kemco)
@@ -21,16 +21,18 @@ class Text_Input:
         self.h = self.img.get_height()
 
     def update(self, events):
-        self.isClicked()
-        if self.pushed:
-            self.input.cursor_blink_interval = 500
-            self.input.update(events)
-        else:
-            self.input.cursor_visible = False
+        if self.visible:
+            self.isClicked()
+            if self.pushed:
+                self.input.cursor_blink_interval = 500
+                self.input.update(events)
+            else:
+                self.input.cursor_visible = False
 
     def draw(self):
-        self.screen.blit(self.img, (self.x, self.y))
-        self.screen.blit(self.input.surface, (self.x+12, self.y+20))
+        if self.visible:
+            self.screen.blit(self.img, (self.x, self.y))
+            self.screen.blit(self.input.surface, (self.x+12, self.y+20))
 
     def checkForClick(self):
         x, y = pygame.mouse.get_pos()
