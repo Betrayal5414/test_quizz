@@ -58,4 +58,5 @@ class Button:
             return False
 
     def change_color(self, color):
-        self.img = pygame.image.load(f"img/boutons/questions/rep_nopush_{color}.png")
+        self.unpushed_img = pygame.image.load(f"img/boutons/questions/rep_nopush_{color}.png")
+        self.pushed_img = pygame.image.load(f"img/boutons/questions/rep_push_{color}.png")

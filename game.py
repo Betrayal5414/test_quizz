@@ -81,7 +81,7 @@ class Game:
 
         if self.question_i > 10:
             self.reset()
-            self.app.set_state('Scores')
+            self.app.set_state('GameOver')
 
 
     def draw(self):
@@ -140,16 +140,24 @@ class Game:
             self.app.set_state('Scores')
 
     def reset(self):
+        # récupère la difficulté depuis l'app
         self.diff = self.app.difficulte
+        # récupère les questions de la bonne difficulté dans la BDD
         self.cursor.execute(f"SELECT * FROM questions WHERE difficulte_id = {self.diff}")
         self.liste_questions = self.cursor.fetchall()
+        # réinitialise les variables pour démarrer la partie
         self.max_index = 39
         self.question_i = 0
         self.next_question()
         self.timer.reset()
+        # envoie les scores à l'objet Scores (?)
         self.app.scores.set_scores((self.nom_joueurs[0], self.scores[0]), (self.nom_joueurs[1], self.scores[1]))
         self.scores = [0, 0]
+        # choisit un background au hasard parmis les couleurs dispos
+        # et change la couleur des éléments en fonction
         self.background_color = random.choice(self.possible_colors)
         self.ingame_img = pygame.image.load(f"img/background/questions/fond_{self.background_color}.png")
+        self.timer.change_color(self.background_color)
         for b in self.answers_buttons:
             b.change_color(self.background_color)
+        self.back_button.change_color(self.background_color)

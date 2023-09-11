@@ -43,9 +43,21 @@ pos_options_hard = (820,590)
 pos_options_hard_text = (885,613)
 pos_options_bg_text_1 = (56,141)
 pos_options_bg_text_2 = (226,473)
+pos_options_icon1 = (200,250)
+pos_options_icon2 = (720,250)
 
 pos_game_score_1 = (WIN_X-250, 160)
 pos_game_score_2 = (WIN_X-250, 210)
+
+pos_gameover_retour = (55,40)
+pos_gameover_rejouer = (545,40)
+pos_gameover_scores = (1036,40)
+pos_gameover_quitter = (55,620)
+pos_gameover_retour_text = (98,60)
+pos_gameover_rejouer_text = (579,60)
+pos_gameover_scores_text = (1076,60)
+pos_gameover_quitter_text = (96,640)
+
 
 # images
 img_name_input = pygame.image.load("img/boutons/menu/bloc_text.png")
@@ -58,9 +70,18 @@ img_moyen = pygame.image.load("img/boutons/menu/gamer_nopush.png")
 img_moyen_push = pygame.image.load("img/boutons/menu/gamer_push.png")
 img_difficile = pygame.image.load("img/boutons/menu/progamer_nopush.png")
 img_difficile_push = pygame.image.load("img/boutons/menu/progamer_push.png")
-img_reponse = pygame.image.load("img/boutons/reponses/rep_nopush_bleu.png")
+img_reponse = pygame.image.load("img/boutons/questions/rep_nopush_blue.png")
 img_options_background = pygame.image.load("img/background/menus/menu_parametres.png")
-img_reponse_bleu_push = pygame.image.load("img/boutons/reponses/rep_push_bleu.png")
+img_reponse_bleu_push = pygame.image.load("img/boutons/questions/rep_push_blue.png")
+img_background_gameover = pygame.image.load("img/background/menus/menu_gameover.png")
+img_gameover_retour_push = pygame.image.load("img/boutons/menu/go_jaune_push.png")
+img_gameover_retour_nopush = pygame.image.load("img/boutons/menu/go_jaune_nopush.png")
+img_gameover_rejouer_push = pygame.image.load("img/boutons/menu/go_bleu_push.png")
+img_gameover_rejouer_nopush = pygame.image.load("img/boutons/menu/go_bleu_nopush.png")
+img_gameover_scores_push = pygame.image.load("img/boutons/menu/go_bleuc_push.png")
+img_gameover_scores_nopush = pygame.image.load("img/boutons/menu/go_bleuc_nopush.png")
+img_gameover_quitter_push = pygame.image.load("img/boutons/menu/go_orange_push.png")
+img_gameover_quitter_nopush = pygame.image.load("img/boutons/menu/go_orange_nopush.png")
 
 
 
@@ -121,14 +142,29 @@ colors = {
         'Light' : "#99c4ab"
     },
     'Yellow' : {
-        'Dark' : "#441300",
-        'Mid' : "#6b0a00",
-        'Light' : "#c49d99"
+        'Dark' : "#354400",
+        'Mid' : "#686b00",
+        'Light' : "#c3c499"
     },
     'Purple' : {
-        'Dark' : "#441300",
-        'Mid' : "#6b0a00",
-        'Light' : "#c49d99"
+        'Dark' : "#44003f",
+        'Mid' : "#5e006b",
+        'Light' : "#bf99c4"
+    },
+    'Grey' : {
+        'Dark' : "#222222",
+        'Mid' : "#353535",
+        'Light' : "#c2b2b5"
+    },
+    'Cyan' : {
+        'Dark' : "#002b3f",
+        'Mid' : "#00616b",
+        'Light' : "#99c0c4"
+    },
+    'Orange' : {
+        'Dark' : "#3f2c00",
+        'Mid' : "#6b3300",
+        'Light' : "#c4ad99"
     },
 }
 

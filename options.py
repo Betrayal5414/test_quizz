@@ -49,12 +49,15 @@ class Options:
         for b in self.btn_list:
             b.update()
             if b.isClicked('start'):
+                # si le/les joueurs ont bien rentré un nom :
                 if self.app.game.nbr_players == 2 and self.text_inputs[1].input.value != "" \
                         and self.text_inputs[0].input.value != "" \
                         or self.app.game.nbr_players == 1 and self.text_inputs[0].input.value != "":
+                    # passe à l'écran de jeu et le réinitialise
                     self.app.set_state('Game')
                     self.app.game.reset()
                     time.sleep(0.2)
+                    # envoie les noms rentrés à la variable du jeu
                     self.app.game.nom_joueurs = [self.app.options.text_inputs[0].input.value,
                                                  self.app.options.text_inputs[1].input.value]
 

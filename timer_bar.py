@@ -54,3 +54,8 @@ class Timer_Bar:
         self.t = 0
         self.cZero = time.time()
         self.chrono = self.sec - (time.time() - self.cZero)
+
+    def change_color(self, color: str):
+        color = color.capitalize()
+        self.main_color = C.colors[color]['Mid']
+        self.border_color = C.colors[color]['Dark']

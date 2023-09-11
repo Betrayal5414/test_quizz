@@ -6,6 +6,7 @@ from menu import Menu
 from options import Options
 from game import Game
 from scores import Score
+from gameover import GameOver
 
 
 class App:
@@ -37,6 +38,7 @@ class App:
         self.options = Options(self)
         self.scores = Score(self)
         self.game = Game(self)
+        self.game_over = GameOver(self)
 
         # to-do state machine
         self.statedict = {
@@ -44,8 +46,9 @@ class App:
             2: 'Options',
             3: 'Game',
             4: 'Scores',
+            5: 'GameOver',
         }
-        self.state = 'Menu'
+        self.state = 'GameOver'
         # start game loop
         self.loop()
 
@@ -82,6 +85,8 @@ class App:
                 self.game.update()
             elif self.state == 'Scores':
                 self.scores.update()
+            elif self.state == 'GameOver':
+                self.game_over.update()
 
             self.button_events()
             # after updates go to draw
@@ -100,6 +105,8 @@ class App:
             self.game.draw()
         elif self.state == 'Scores':
             self.scores.draw()
+        elif self.state == 'GameOver':
+            self.game_over.draw()
         # update changes
         pygame.display.flip()
 
