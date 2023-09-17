@@ -50,6 +50,9 @@ class Game:
         self.current_player = 0
         self.nbr_players = 1
 
+        self.icone_j1 = None
+        self.icone_j2 = None
+
         # choisis une question
         self.reset()
 
@@ -80,8 +83,7 @@ class Game:
             self.timer.reset()
 
         if self.question_i > 10:
-            self.reset()
-            self.app.set_state('GameOver')
+            self.end()
 
 
     def draw(self):
@@ -136,8 +138,7 @@ class Game:
         self.timer.reset()
         # si il n'y a plus de question, retour menu et reset liste
         if self.max_index < 0:
-            self.reset()
-            self.app.set_state('GameOver')
+            self.end()
 
     def reset(self):
         # récupère la difficulté depuis l'app
@@ -150,8 +151,7 @@ class Game:
         self.question_i = 0
         self.next_question()
         self.timer.reset()
-        # envoie les scores à l'objet Scores (?)
-        self.app.scores.set_scores((self.nom_joueurs[0], self.scores[0]), (self.nom_joueurs[1], self.scores[1]))
+        # reset scores
         self.scores = [0, 0]
         # choisit un background au hasard parmis les couleurs dispos
         # et change la couleur des éléments en fonction
@@ -161,3 +161,13 @@ class Game:
         for b in self.answers_buttons:
             b.change_color(self.background_color)
         self.back_button.change_color(self.background_color)
+
+    def end(self):
+        #send scores
+        self.app.scores.set_scores((self.nom_joueurs[0], self.scores[0]), (self.nom_joueurs[1], self.scores[1]))
+        self.app.scores.set_scores_db()
+        self.app.scores.get_scores_db()
+
+        self.app.set_state('GameOver')
+        self.reset()
+        pass

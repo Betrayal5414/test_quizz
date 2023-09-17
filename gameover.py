@@ -40,5 +40,6 @@ class GameOver:
                 time.sleep(0.2)
             elif b.isClicked('Scores'):
                 self.app.set_state("Scores")
+                self.app.scores.get_scores_db()
             elif b.isClicked('Quitter'):
                 self.app.running = False

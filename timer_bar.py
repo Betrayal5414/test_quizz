@@ -32,7 +32,7 @@ class Timer_Bar:
         if self.t >= self.w-self.margin*2:
             self.t = self.w-self.margin*2
 
-        # timer texte, minnuteur qui va de self.sec à 0
+        # chrono, minuteur qui va de self.sec à 0
         self.chrono = self.sec - (time.time() - self.cZero)
         if self.chrono < 0:
             self.chrono = 0

@@ -1,11 +1,16 @@
+import datetime
+
 import pygame
 import constants as C
 from button import Button
+import time
 
 class Score:
     def __init__(self, app):
         self.app = app
         self.screen = app.screen
+        self.cursor = self.app.cursor
+        self.conn = self.app.conn
 
         self.p1_score = 0
         self.p2_score = 0
@@ -13,7 +18,10 @@ class Score:
         self.p1_name = ""
         self.p2_name = ""
 
-        self.button = Button(self.screen, (15, 15), C.img_menu_start, C.img_menu_start_push, 'menu')
+        self.best_scores = []
+        self.score_names = []
+
+        self.button = Button(self.screen, C.pos_gameover_retour, C.img_menu_start, C.img_menu_start_push, 'menu')
 
 
     def update(self):
@@ -23,12 +31,14 @@ class Score:
 
     def draw(self):
         self.button.draw()
-
-        C.blit_text(self.screen, f"Score de {self.p1_name}: {self.p1_score} !",
-                    (C.WIN_X/2, 300), C.WIN_X, C.font_karmatic20, 'white')
-        C.blit_text(self.screen, f"Score de {self.p2_name}: {self.p2_score} !",
-                    (C.WIN_X / 2, 420), C.WIN_X, C.font_karmatic20, 'white')
-
+        C.blit_text(self.screen, "Retour", C.pos_gameover_retour_text, C.WIN_X, C.font_karmatic20, 'black')
+        C.blit_text(self.screen, f"PTS         DATE               NOM",
+                    (70, 140), C.WIN_X, C.font_karmatic20, 'yellow')
+        # affichage best scores
+        if len(self.best_scores) > 0:
+            for i, s in enumerate(self.best_scores):
+                C.blit_text(self.screen, f"{s[1]}       {s[2]}       {s[3]}.",
+                            (70, 200 + i*30), C.WIN_X, C.font_karmatic20, 'yellow')
 
     def button_events(self):
         if self.button.isClicked('menu'):
@@ -42,3 +52,15 @@ class Score:
         self.p1_name = score1[0]
         self.p2_name = score2[0]
 
+    def get_scores_db(self):
+        self.cursor.execute(f"Select * FROM score ORDER BY score_joueur DESC LIMIT 10")
+        self.best_scores = self.cursor.fetchall()
+        print(self.best_scores)
+
+    def set_scores_db(self):
+        print(datetime.datetime.today().strftime("%d-%m-%Y"))
+        self.cursor.execute('INSERT INTO score (score_joueur, date, nom_joueur) VALUES (?,?,?)', (self.p1_score, "15-09-23", self.p1_name))
+        if self.p2_name != "":
+            self.cursor.execute('INSERT INTO score (score_joueur, date, nom_joueur) VALUES (?,?,?)', (self.p2_score, "15-09-23", self.p2_name))
+        self.conn.commit()
+        pass

@@ -7,6 +7,8 @@ class Options:
     def __init__(self, app):
         self.app = app
         self.screen = app.screen
+        self.cursor = self.app.cursor
+        self.conn = self.app.conn
 
         # récupération des noms difficulté dans la BDD
         self.app.cursor.execute(f"SELECT intitule_diff FROM difficulte WHERE difficulte_id < 4")
@@ -64,8 +66,11 @@ class Options:
                     self.app.game.reset()
                     time.sleep(0.2)
                     # envoie les noms rentrés à la variable du jeu
-                    self.app.game.nom_joueurs = [self.app.options.text_inputs[0].input.value,
-                                                 self.app.options.text_inputs[1].input.value]
+                    self.app.game.nom_joueurs = [self.text_inputs[0].input.value,
+                                                 self.text_inputs[1].input.value]
+                    # envoie les icones des joueurs au jeu
+                    self.app.game.icone_j1 = C.img_options_icones[self.j1]
+                    self.app.game.icone_j2 = C.img_options_icones[self.j2]
 
             elif b.isClicked('easy'):
                 self.app.difficulte = 1
@@ -124,4 +129,3 @@ class Options:
         C.blit_text(self.screen, '2 Joueurs', C.pos_options_2joueur_text, C.WIN_X, C.font_karmatic20)
         C.blit_text(self.screen, 'Choisir le nombre de joueurs', C.pos_options_bg_text_1, C.WIN_X+50, C.font_karmatic50, 'white')
         C.blit_text(self.screen, 'Choisir la difficulte', C.pos_options_bg_text_2, C.WIN_X, C.font_karmatic50, 'white')
-
