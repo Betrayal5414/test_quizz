@@ -48,7 +48,7 @@ class App:
             4: 'Scores',
             5: 'GameOver',
         }
-        self.state = 'GameOver'
+        self.state = 'Game'
         # start game loop
         self.loop()
 

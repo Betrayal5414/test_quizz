@@ -14,7 +14,8 @@ class Timer_Bar:
         self.corners = 5   # determines how much the rect's corners are rounded
         # timer-related variables
         self.t = 0
-        self.sec = sec
+        self.delay = 5
+        self.sec = sec + self.delay
         self.cZero = time.time()
         self.chrono = self.sec - (time.time() - self.cZero)
         # surface to write time left
@@ -26,16 +27,16 @@ class Timer_Bar:
     def update(self):
         # self.t représente le nbr de pixel a retirer de la barre (0 au début, self.w-self.margin*2 au max)
         # self.sec - self.chrono    -> temps écoulé (secondes)
-        # (self.w-self.margin*2)/self.sec   -> nbr de pixels à retirer chaque seconde
-        self.t = (self.sec - self.chrono) * ((self.w-self.margin*2)/self.sec)
-        # s'assure que t ne devient pas négatif, peut etre remplacé par max(0,self.t)
-        if self.t >= self.w-self.margin*2:
-            self.t = self.w-self.margin*2
-
-        # chrono, minuteur qui va de self.sec à 0
+        # après 20s, il faut que toute la largeur du rectangle soit réduite
+        # donc que self.t = self.w
         self.chrono = self.sec - (time.time() - self.cZero)
         if self.chrono < 0:
             self.chrono = 0
+        if self.sec - self.chrono > self.delay:
+            self.t = (self.sec - self.chrono - self.delay) * ((self.w - self.margin*2) / self.sec)
+            if self.t > self.w - self.margin*2:
+                self.t = self.w - self.margin*2
+
 
     def draw(self):
         # draw outside rect

@@ -153,6 +153,7 @@ class Game:
         self.timer.reset()
         # reset scores
         self.scores = [0, 0]
+        self.current_player = 0
         # choisit un background au hasard parmis les couleurs dispos
         # et change la couleur des éléments en fonction
         self.background_color = random.choice(self.possible_colors)
