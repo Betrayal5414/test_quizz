@@ -56,6 +56,8 @@ class Menu:
             elif b.isClicked('regles'):
                 self.show_rules()
             elif b.isClicked('scores'):
+                if self.app.scores.best_scores == []:
+                    self.app.scores.get_scores_db()
                 self.app.set_state('Scores')
         self.close_rules_btn.update()
         if self.close_rules_btn.isClicked('close_rules'):

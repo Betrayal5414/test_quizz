@@ -1,9 +1,6 @@
 import datetime
-
-import pygame
 import constants as C
 from button import Button
-import time
 
 class Score:
     def __init__(self, app):
@@ -45,6 +42,7 @@ class Score:
             self.app.set_state('Menu')
 
     def set_scores(self, score1=(None, ""), score2=(None, "")):
+        self.p1_score = self.p2_score = 0
         if not score1[1] == None:
             self.p1_score += score1[1]
         if not score2[1] == None:
@@ -53,14 +51,16 @@ class Score:
         self.p2_name = score2[0]
 
     def get_scores_db(self):
-        self.cursor.execute(f"Select * FROM score ORDER BY score_joueur DESC LIMIT 10")
+        self.cursor.execute(f"Select * FROM score ORDER BY score_joueur DESC LIMIT 15")
         self.best_scores = self.cursor.fetchall()
         print(self.best_scores)
 
     def set_scores_db(self):
-        print(datetime.datetime.today().strftime("%d-%m-%Y"))
-        self.cursor.execute('INSERT INTO score (score_joueur, date, nom_joueur) VALUES (?,?,?)', (self.p1_score, "15-09-23", self.p1_name))
-        if self.p2_name != "":
-            self.cursor.execute('INSERT INTO score (score_joueur, date, nom_joueur) VALUES (?,?,?)', (self.p2_score, "15-09-23", self.p2_name))
+        today_date = datetime.datetime.today().strftime("%d-%m-%Y")
+        # enlève les 2 premiers caractères de l'année ( 2023  ->  23 )
+        today_date = today_date[:-4] + today_date[-2:]
+        self.cursor.execute('INSERT INTO score (score_joueur, date, nom_joueur) VALUES (?,?,?)', (self.p1_score, today_date, self.p1_name))
+        if self.app.game.nbr_players == 2:
+            self.cursor.execute('INSERT INTO score (score_joueur, date, nom_joueur) VALUES (?,?,?)', (self.p2_score, today_date, self.p2_name))
         self.conn.commit()
         pass

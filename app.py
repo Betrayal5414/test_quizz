@@ -1,6 +1,7 @@
 import pygame
 import sqlite3
 import sys
+import random
 import constants as C
 from menu import Menu
 from options import Options
@@ -22,9 +23,15 @@ class App:
         pygame.init()
         pygame.key.set_repeat(500, 64)
         self.screen = pygame.display.set_mode(C.WIN_SIZE) # taille de la fenêtre
+        pygame.mixer.init()
+        self.path_music_menus = 'sounds/music_menus.mp3'
+        self.paths_musics_game = ['sounds/music-ingame.mp3', 'sounds/music-ingame2.wav', 'sounds/music-ingame3.wav']
+        pygame.mixer.music.load(self.path_music_menus)
+        pygame.mixer.music.play(-1)
+        pygame.display.set_icon(C.img_quizz_icon)
 
         # titre de la fenêtre
-        pygame.display.set_caption('Le quizz des gamerzz')
+        pygame.display.set_caption('Game Quizz')
 
         self.running = True
 
@@ -48,7 +55,7 @@ class App:
             4: 'Scores',
             5: 'GameOver',
         }
-        self.state = 'Game'
+        self.state = 'Menu'
         # start game loop
         self.loop()
 
@@ -115,6 +122,7 @@ class App:
         if self.state == 'Game':
             if self.game.back_button.isClicked():
                 self.state = 'Options'
+                self.switch_music('menus')
             for i, b in enumerate(self.game.answers_buttons):
                 if b.isClicked():
                     self.game.answer_index = i+1
@@ -124,3 +132,16 @@ class App:
         for k,v in self.statedict.items():
             if state == v:
                 self.state = state
+
+
+    def stop_music(self):
+        pygame.mixer.music.stop()
+
+    def switch_music(self, music):
+        self.stop_music()
+        if music == 'ingame' or music == 'game':
+            choice = random.choice(self.paths_musics_game)
+            pygame.mixer.music.load(choice)
+        if music == 'menus' or music == 'menu':
+            pygame.mixer.music.load(self.path_music_menus)
+        pygame.mixer.music.play(-1)

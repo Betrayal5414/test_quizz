@@ -68,7 +68,7 @@ class Game:
             if self.answer_index == self.bonne_reponse + 1:
                 # get score depending on time spent
                 self.scores[self.current_player] += max(round(
-                    C.max_points * (self.timer.chrono/self.timer.sec)), C.min_points)
+                    C.max_points * (self.timer.chrono/self.timer.sec)), C.min_points) * self.app.difficulte
                 self.next_question()
                 self.timer.reset()
                 self.sound_juste.play()
@@ -82,7 +82,7 @@ class Game:
             self.next_question()
             self.timer.reset()
 
-        if self.question_i > 10:
+        if self.question_i > self.nbr_players*10:
             self.end()
 
 
@@ -103,18 +103,27 @@ class Game:
             C.blit_text(self.screen, r[1], (70+300*i, 650), 280+300*i, C.font_pixelop8small, 'white')
         # affichage nom joueur en cours
         if self.nbr_players == 2:
-            C.blit_text(self.screen, f"{self.nom_joueurs[self.current_player]}", (C.WIN_X/6, 14), C.WIN_X/1.4, C.font_karmatic30, self.background_color)
+            C.blit_text(self.screen, f"{self.nom_joueurs[self.current_player]}", (C.WIN_X/6, 14), C.WIN_X/1.4,
+                        C.font_karmatic30, C.colors[self.background_color.capitalize()]['Light'])
         # affichage scores
-        C.blit_text(self.screen, f"{self.nom_joueurs[0]} : {self.scores[0]}",
+        C.blit_text(self.screen, f"{self.scores[0]} pts",
                     C.pos_game_score_1, C.WIN_X, C.font_karmatic20, 'white')
         if self.nbr_players == 2:
-            C.blit_text(self.screen, f"{self.nom_joueurs[1]} : {self.scores[1]}",
+            C.blit_text(self.screen, f"{self.scores[1]} pts",
                         C.pos_game_score_2, C.WIN_X, C.font_karmatic20, 'white')
-
+        # affichage joueurs
+        C.blit_text(self.screen, f"{self.nom_joueurs[0]}",
+                    C.pos_game_nom_joueur_1, C.WIN_X+150, C.font_karmatic20, 'white')
+        if self.nbr_players == 2:
+            C.blit_text(self.screen, f"{self.nom_joueurs[1]}",
+                        C.pos_game_nom_joueur_2, C.WIN_X+150, C.font_karmatic20, 'white')
         # texte bouton retour menu
-        C.blit_text(self.screen, 'Quit', C.pos_quit_text, 280, C.font_karmatic30, '#b01010')
+        C.blit_text(self.screen, 'Quit', C.pos_quit_text, 280, C.font_karmatic30, 'black')
 
-        # affichage texte difficulté
+        # affichage icone joueurs
+        self.screen.blit(self.icone_j1, C.pos_game_icon_1)
+        if self.nbr_players == 2:
+            self.screen.blit(self.icone_j2, C.pos_game_icon_2)
 
 
     def next_question(self):
@@ -170,5 +179,6 @@ class Game:
         self.app.scores.get_scores_db()
 
         self.app.set_state('GameOver')
+        self.app.switch_music('menus')
         self.reset()
         pass

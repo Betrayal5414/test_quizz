@@ -1,6 +1,5 @@
 import pygame
 import constants as C
-from button import Button
 
 class Rules:
     def __init__(self, app):
@@ -30,8 +29,6 @@ class Rules:
             "Si ta réponse est correcte, tu obtiendras alors des points. Attention cependant:",
             "plus tu prendras de temps à répondre moins tu auras de point (15 secondes = 150pts, 14",
             "secondes = 140pts, avec un minimum de 30 points).",
-            'De plus, si t’es super fort et que tu réponds correctement plusieurs fois d’affilée, ',
-            'alors tu as droit à une question bonus qui rapporte gros !',
             "Si la réponse que tu as choisie est fausse, alors tu ne gagnes pas de points. ",
             'Si tu n’arrives pas à te décider dans le temps imparti et que tu n’as sélectionné aucune',
             'réponse, tu ne gagnes pas de points et on passe à la question suivante. ',

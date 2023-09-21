@@ -14,8 +14,8 @@ class Options:
         self.app.cursor.execute(f"SELECT intitule_diff FROM difficulte WHERE difficulte_id < 4")
         self.diff_names = self.app.cursor.fetchall()
 
-        self.j1 = 0
-        self.j2 = 1
+        self.j1_icon_index = 0
+        self.j2_icon_index = 1
 
         self.btn_list = [
             Button(self.screen, C.pos_options_start, C.img_menu_start, C.img_menu_start_push, 'start'),
@@ -64,13 +64,14 @@ class Options:
                     # passe à l'écran de jeu et le réinitialise
                     self.app.set_state('Game')
                     self.app.game.reset()
-                    time.sleep(0.2)
                     # envoie les noms rentrés à la variable du jeu
                     self.app.game.nom_joueurs = [self.text_inputs[0].input.value,
                                                  self.text_inputs[1].input.value]
                     # envoie les icones des joueurs au jeu
-                    self.app.game.icone_j1 = C.img_options_icones[self.j1]
-                    self.app.game.icone_j2 = C.img_options_icones[self.j2]
+                    self.app.game.icone_j1 = C.img_options_icones[self.j1_icon_index]
+                    self.app.game.icone_j2 = C.img_options_icones[self.j2_icon_index]
+                    # change la musique
+                    self.app.switch_music('ingame')
 
             elif b.isClicked('easy'):
                 self.app.difficulte = 1
@@ -98,25 +99,30 @@ class Options:
                 self.btn_list[8].visible = True
                 self.btn_list[5].pushed = False
                 self.app.game.nbr_players = 2
+                # vérifie si le j1 a déjà choisi l'icone de base du j2
+                # auquel cas change l'icone du j2
+                if self.j2_icon_index == self.j1_icon_index:
+                    self.j2_icon_index += 1
+                    self.btn_list[8].change_image(C.img_options_icones[self.j2_icon_index], C.img_options_icones[self.j2_icon_index])
 
             elif b.isClicked('quit'):
                 self.app.set_state('Menu')
 
             elif b.isClicked('icone_j1'):
-                self.j1 += 1
-                if self.j1 > len(C.img_options_icones) - 1:
-                    self.j1 = 0
-                if self.j1 == self.j2:
-                    self.j1 += 1
-                b.change_image(C.img_options_icones[self.j1], C.img_options_icones[self.j1])
+                self.j1_icon_index += 1
+                if self.j1_icon_index == self.j2_icon_index and self.app.game.nbr_players == 2:
+                    self.j1_icon_index += 1
+                if self.j1_icon_index > len(C.img_options_icones) - 1:
+                    self.j1_icon_index = 0
+                b.change_image(C.img_options_icones[self.j1_icon_index], C.img_options_icones[self.j1_icon_index])
 
             elif b.isClicked('icone_j2'):
-                self.j2 += 1
-                if self.j2 > len(C.img_options_icones) - 1:
-                    self.j2 = 0
-                if self.j2 == self.j1:
-                    self.j2 += 1
-                b.change_image(C.img_options_icones[self.j2], C.img_options_icones[self.j2])
+                self.j2_icon_index += 1
+                if self.j2_icon_index == self.j1_icon_index:
+                    self.j2_icon_index += 1
+                if self.j2_icon_index > len(C.img_options_icones) - 1:
+                    self.j2_icon_index = 0
+                b.change_image(C.img_options_icones[self.j2_icon_index], C.img_options_icones[self.j2_icon_index])
 
 
     def draw_text(self):

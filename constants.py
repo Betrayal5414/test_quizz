@@ -46,8 +46,13 @@ pos_options_bg_text_2 = (226,473)
 pos_options_icon1 = (140,245)
 pos_options_icon2 = (660,245)
 
-pos_game_score_1 = (WIN_X-250, 160)
-pos_game_score_2 = (WIN_X-250, 210)
+
+pos_game_nom_joueur_1 = (1100, 164)
+pos_game_nom_joueur_2 = (1100, 275)
+pos_game_score_1 = (1100, 189)
+pos_game_score_2 = (1100, 300)
+pos_game_icon_1 = (1000, 150)
+pos_game_icon_2 = (1000, 260)
 
 pos_gameover_retour = (55,40)
 pos_gameover_rejouer = (545,40)
@@ -61,11 +66,12 @@ pos_gameover_quitter_text = (96,640)
 rect_rules_border = pygame.Rect(WIN_X/6, WIN_Y/8, WIN_X - WIN_X/3, WIN_Y*0.75)
 rect_rules_inside = pygame.Rect(WIN_X/6 +10, WIN_Y/8 +10, WIN_X - WIN_X/3 -20, WIN_Y*0.75 -20)
 pos_rules_text = (WIN_X/6 + 20,WIN_Y/8 + 30)
-pos_rules_margin = 16
+pos_rules_margin = 17.5
 pos_rules_close = (WIN_X/6 -8, WIN_Y/8 - 8)
 
 
 # images
+img_quizz_icon = pygame.image.load('img/icon_quizz.ico')
 img_name_input = pygame.image.load("img/boutons/menu/bloc_text.png")
 img_menu_background = pygame.image.load("img/background/menus/background.png")
 img_menu_start = pygame.image.load("img/boutons/menu/menu_nopush.png")
